@@ -21,11 +21,22 @@
 		Row
 	} from '@sveltestrap/sveltestrap';
 
+    const { data } = $props()
+
 	let isOpen = $state(false);
 
 	function handleUpdate(event: CustomEvent<boolean>) {
 		isOpen = event.detail;
 	}
+
+    function getFilename(name: string, type: 'image' | 'zip' | 'directory'){
+        if (type == 'zip' || type == 'directory'){
+            name = name.substring(0, name.length -1)
+        }
+
+        return name.substring(name.lastIndexOf('/') +1)
+    }
+
 </script>
 
 <Container class="sticky-top text-bg-light">
@@ -65,76 +76,27 @@
 
 <Container>
 	<Row cols={{ lg: 3, md: 2, sm: 1, xs: 1 }}>
+        {#each data.objects as object}
 		<Col class="mt-3">
 			<Card class="h-100">
-				<CardHeader><Icon name="folder-fill"></Icon>&nbsp;Hello</CardHeader>
-			</Card>
-		</Col>
-		<Col class="mt-3">
-			<Card class="h-100">
-				<CardBody><Icon name="folder-fill"></Icon>&nbsp;Hello</CardBody>
-			</Card>
-		</Col>
-		<Col class="mt-3">
-			<Card class="h-100">
-				<CardBody><Icon name="folder-fill"></Icon>&nbsp;Hello</CardBody>
-			</Card>
-		</Col>
-
-		<Col class="mt-3">
-			<Card class="h-100">
-				<CardHeader><Icon name="image"></Icon> &nbsp; Hello</CardHeader>
-				<CardBody>
+                {#if object.type == 'directory'}
+				<CardHeader><Icon name="folder-fill"></Icon>&nbsp;{getFilename(object.name, object.type)}</CardHeader>
+                {/if}
+                {#if object.type == 'zip'}
+                <CardHeader><Icon name="file-zip"></Icon>&nbsp;{getFilename(object.name, object.type)}</CardHeader>
+                {/if}
+                {#if object.type == 'image'}
+                <CardHeader><Icon name="image"></Icon>&nbsp;{getFilename(object.name, object.type)}</CardHeader>
+                <CardBody>
 					<Image
 						thumbnail
-						src="http://192.168.1.70:9199/gallery/cg%2F%5BPixiv%20FANBOX%5D%20Kilesha%20%E3%81%8D%E3%82%8C%E3%82%90%E3%81%97%E3%82%83%2028724783%20(2018.04.27-2023.08.23)%2F008.jpg"
+                        lazy
+						src="/thumb?path={object.name}"
 					></Image>
 				</CardBody>
-			</Card>
+                {/if}
+            </Card>
 		</Col>
-		<Col class="mt-3">
-			<Card class="h-100">
-				<CardHeader><Icon name="image"></Icon> &nbsp; Hello</CardHeader>
-				<CardBody>
-					<Image
-						thumbnail
-						src="http://192.168.1.70:9199/gallery/cg%2F%5BPixiv%20FANBOX%5D%20Kilesha%20%E3%81%8D%E3%82%8C%E3%82%90%E3%81%97%E3%82%83%2028724783%20(2018.04.27-2023.08.23)%2F009.jpg"
-					></Image>
-				</CardBody>
-			</Card>
-		</Col>
-		<Col class="mt-3">
-			<Card class="h-100">
-				<CardHeader><Icon name="image"></Icon> &nbsp; Hello</CardHeader>
-				<CardBody>
-					<Image
-						thumbnail
-						src="http://192.168.1.70:9199/gallery/cg%2F%5BPixiv%20FANBOX%5D%20Kilesha%20%E3%81%8D%E3%82%8C%E3%82%90%E3%81%97%E3%82%83%2028724783%20(2018.04.27-2023.08.23)%2F010.jpg"
-					></Image>
-				</CardBody>
-			</Card>
-		</Col>
-		<Col class="mt-3">
-			<Card class="h-100">
-				<CardHeader><Icon name="image"></Icon> &nbsp; Hello</CardHeader>
-				<CardBody>
-					<Image
-						thumbnail
-						src="http://192.168.1.70:9199/gallery/cg%2F%5BPixiv%20FANBOX%5D%20Kilesha%20%E3%81%8D%E3%82%8C%E3%82%90%E3%81%97%E3%82%83%2028724783%20(2018.04.27-2023.08.23)%2F007.jpg"
-					></Image>
-				</CardBody>
-			</Card>
-		</Col>
-		<Col class="mt-3">
-			<Card class="h-100">
-				<CardHeader><Icon name="image"></Icon> &nbsp; Hello</CardHeader>
-				<CardBody>
-					<Image
-						thumbnail
-						src="http://192.168.1.70:9199/gallery/cg%2F%5BPixiv%20FANBOX%5D%20Kilesha%20%E3%81%8D%E3%82%8C%E3%82%90%E3%81%97%E3%82%83%2028724783%20(2018.04.27-2023.08.23)%2F006.jpg"
-					></Image>
-				</CardBody>
-			</Card>
-		</Col>
+        {/each}
 	</Row>
 </Container>
