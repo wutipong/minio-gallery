@@ -1,7 +1,6 @@
-import { listObjects } from "$lib/minio";
 import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ request, fetch, url }) => {
+export const load: PageServerLoad = async ({ url }) => {
     const path = url.searchParams.get('path');
 
     return {path: path}

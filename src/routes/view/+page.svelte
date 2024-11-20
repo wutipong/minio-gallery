@@ -1,9 +1,6 @@
 <script lang="ts">
 	import {
-		Card,
-		CardBody,
-		CardHeader,
-		Col,
+		Button,
 		Collapse,
 		Container,
 		Dropdown,
@@ -18,12 +15,13 @@
 		NavbarToggler,
 		NavItem,
 		NavLink,
-		Row
+		Spinner
 	} from '@sveltestrap/sveltestrap';
 
 	const { data } = $props();
 
 	let isOpen = $state(false);
+	let isImageLoaded = $state(false);
 
 	function handleUpdate(event: CustomEvent<boolean>) {
 		isOpen = event.detail;
@@ -33,7 +31,7 @@
 		name: string;
 		prefix: string;
 	}
-    
+
 	function createBreadcrumb(path?: string): BreadcrumbData[] {
 		let output = [];
 		output.push({
@@ -60,10 +58,10 @@
 	}
 
 	let breadcrumbData: BreadcrumbData[] = $state([]);
-    let path: string = $state("")
+	let path: string = $state('');
 
 	$effect(() => {
-        path = data.path?data.path: "";
+		path = data.path ? data.path : '';
 		breadcrumbData = createBreadcrumb(path);
 	});
 </script>
@@ -112,7 +110,24 @@
 </Container>
 
 <Container>
-    <a href="/s3/{path}" target="_blank">
-        <Image src="/s3/{path}" width="100%"></Image>
-    </a>
+	<div class="position-relative">
+		{#if !isImageLoaded}
+			<div class="w-100">
+				<Spinner type="border"></Spinner> Loading
+			</div>
+		{/if}
+		<a href="/s3/{path}" target="_blank">
+			<Image
+				src="/view/image?path={path}"
+				class="w-100"
+				onload={() => (isImageLoaded = true)}
+			></Image>
+		</a>
+		<Button color="link" outline class="position-absolute top-0 start-0 h-100" style="width:20%;">
+			<Icon name="chevron-left"></Icon>
+		</Button>
+		<Button color="link" outline class="position-absolute top-0 end-0 h-100 w-10" style="width:20%;">
+			<Icon name="chevron-right"></Icon>
+		</Button>
+	</div>
 </Container>
