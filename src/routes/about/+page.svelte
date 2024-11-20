@@ -1,26 +1,15 @@
 <script lang="ts">
 	import {
-		Card,
-		CardBody,
-		CardHeader,
-		Col,
 		Collapse,
 		Container,
-		Dropdown,
-		DropdownItem,
-		DropdownMenu,
-		DropdownToggle,
 		Icon,
-		Image,
 		Nav,
 		Navbar,
 		NavbarBrand,
 		NavbarToggler,
 		NavItem,
-		NavLink,
-		Row
-	} from '@sveltestrap/sveltestrap';
-
+		NavLink	} from '@sveltestrap/sveltestrap';
+	
 	let isOpen = $state(false);
     function handleUpdate(event: CustomEvent<boolean>) {
 		isOpen = event.detail;
@@ -31,25 +20,13 @@
 
 <Container class="sticky-top text-bg-light">
 	<Navbar dark expand="md" container="md">
-		<NavbarBrand href="/">About</NavbarBrand>
+		<NavbarBrand href="/">Gallery</NavbarBrand>
 		<NavbarToggler on:click={() => (isOpen = !isOpen)} />
 		<Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
 			<Nav class="ms-auto" navbar>
 				<NavItem>
-					<NavLink href="#components/">Components</NavLink>
+					<NavLink onclick={()=>history.back()}> <Icon name="arrow-return-left"></Icon>&nbsp; Go Back</NavLink>
 				</NavItem>
-				<NavItem>
-					<NavLink href="https://github.com/sveltestrap/sveltestrap">GitHub</NavLink>
-				</NavItem>
-				<Dropdown nav inNavbar>
-					<DropdownToggle nav caret>Options</DropdownToggle>
-					<DropdownMenu end>
-						<DropdownItem>Option 1</DropdownItem>
-						<DropdownItem>Option 2</DropdownItem>
-						<DropdownItem divider />
-						<DropdownItem>Reset</DropdownItem>
-					</DropdownMenu>
-				</Dropdown>
 			</Nav>
 		</Collapse>
 	</Navbar>

@@ -1,12 +1,9 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import {
 		Button,
 		Collapse,
 		Container,
-		Dropdown,
-		DropdownItem,
-		DropdownMenu,
-		DropdownToggle,
 		Icon,
 		Image,
 		Nav,
@@ -61,7 +58,7 @@
 	let path: string = $state('');
 
 	$effect(() => {
-		path = data.path ? data.path : '';
+		path = data.current ? data.current : '';
 		breadcrumbData = createBreadcrumb(path);
 	});
 </script>
@@ -73,20 +70,21 @@
 		<Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
 			<Nav class="ms-auto" navbar>
 				<NavItem>
-					<NavLink href="#components/">Components</NavLink>
+					<NavLink
+						disabled={data.previous == null}
+						href={`http://localhost:5173/view?path=${data.previous}`}
+					>
+						<Icon name="chevron-left"></Icon>Previous
+					</NavLink>
 				</NavItem>
 				<NavItem>
-					<NavLink href="https://github.com/sveltestrap/sveltestrap">GitHub</NavLink>
+					<NavLink
+						disabled={data.next == null}
+						href={`http://localhost:5173/view?path=${data.next}`}
+					>
+						Next<Icon name="chevron-right"></Icon>
+					</NavLink>
 				</NavItem>
-				<Dropdown nav inNavbar>
-					<DropdownToggle nav caret>Options</DropdownToggle>
-					<DropdownMenu end>
-						<DropdownItem>Option 1</DropdownItem>
-						<DropdownItem>Option 2</DropdownItem>
-						<DropdownItem divider />
-						<DropdownItem>Reset</DropdownItem>
-					</DropdownMenu>
-				</Dropdown>
 			</Nav>
 		</Collapse>
 	</Navbar>
@@ -123,10 +121,26 @@
 				onload={() => (isImageLoaded = true)}
 			></Image>
 		</a>
-		<Button color="link" outline class="position-absolute top-0 start-0 h-100" style="width:20%;">
+		<Button
+			color="link"
+			outline
+			class="position-absolute top-0 start-0 h-100"
+			style="width:20%;"
+			onclick={() => {
+				if (data.previous != null) goto(`http://localhost:5173/view?path=${data.previous}`);
+			}}
+		>
 			<Icon name="chevron-left"></Icon>
 		</Button>
-		<Button color="link" outline class="position-absolute top-0 end-0 h-100 w-10" style="width:20%;">
+		<Button
+			color="link"
+			outline
+			class="position-absolute top-0 end-0 h-100 w-10"
+			style="width:20%;"
+			onclick={() => {
+				if (data.next != null) goto(`http://localhost:5173/view?path=${data.next}`);
+			}}
+		>
 			<Icon name="chevron-right"></Icon>
 		</Button>
 	</div>
