@@ -5,6 +5,12 @@ import proxy from 'express-http-proxy';
 
 const app = express();
 
+const endpoint = process.env.MINIO_ENDPOINT;
+const bucket = process.env.MINIO_BUCKET;
+
+console.log(`endpoint: ${endpoint}`);
+console.log(`bucket: ${bucket}`);
+
 // add a route that lives separately from the SvelteKit app
 app.get('/healthcheck', (req, res) => {
 	res.end('ok');
@@ -12,8 +18,8 @@ app.get('/healthcheck', (req, res) => {
 
 app.use(
 	'/s3',
-	proxy(process.env.MINIO_ENDPOINT, {
-		proxyReqPathResolver: (req) => req.url.replace(/^\/s3/, `/${process.env.MINIO_BUCKET}/`),
+	proxy(endpoint, {
+		proxyReqPathResolver: (req) => req.url.replace(/^\/s3/, `/${bucket}/`),
 		proxyReqOptDecorator: function (proxyReqOpts, srcReq) {
 			proxyReqOpts.headers['X-Minio-Extract'] = 'true';
 			// proxyReqOpts.removeHeader('authorization');
