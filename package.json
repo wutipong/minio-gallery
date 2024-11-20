@@ -34,7 +34,6 @@
 		"@sveltestrap/sveltestrap": "^6.2.7",
 		"express": "^4.21.1",
 		"express-http-proxy": "^2.1.1",
-		"express-proxy": "^0.0.2",
 		"sharp": "^0.33.5"
 	}
 }
