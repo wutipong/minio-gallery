@@ -1,2 +1,6 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<svelte:head>
+    <meta http-equiv="refresh" content="0; url=/browse" />
+</svelte:head>
+
+<h1>Gallery</h1>
+<p>click here to <a href="/browse">browse</a> if the browser does not redirect.</p>
