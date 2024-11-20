@@ -30,6 +30,7 @@
 	},
 	"dependencies": {
 		"@aws-sdk/client-s3": "^3.696.0",
+		"@sveltejs/adapter-node": "^5.2.9",
 		"@sveltestrap/sveltestrap": "^6.2.7",
 		"express": "^4.21.1",
 		"express-http-proxy": "^2.1.1",
