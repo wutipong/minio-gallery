@@ -72,7 +72,7 @@
 				<NavItem>
 					<NavLink
 						disabled={data.previous == null}
-						href={`http://localhost:5173/view?path=${data.previous}`}
+						href={`/view?path=${data.previous}`}
 					>
 						<Icon name="chevron-left"></Icon>Previous
 					</NavLink>
@@ -80,7 +80,7 @@
 				<NavItem>
 					<NavLink
 						disabled={data.next == null}
-						href={`http://localhost:5173/view?path=${data.next}`}
+						href={`/view?path=${data.next}`}
 					>
 						Next<Icon name="chevron-right"></Icon>
 					</NavLink>
@@ -127,7 +127,7 @@
 			class="position-absolute top-0 start-0 h-100"
 			style="width:20%;"
 			onclick={() => {
-				if (data.previous != null) goto(`http://localhost:5173/view?path=${data.previous}`);
+				if (data.previous != null) goto(`/view?path=${data.previous}`);
 			}}
 		>
 			<Icon name="chevron-left"></Icon>
@@ -138,7 +138,7 @@
 			class="position-absolute top-0 end-0 h-100 w-10"
 			style="width:20%;"
 			onclick={() => {
-				if (data.next != null) goto(`http://localhost:5173/view?path=${data.next}`);
+				if (data.next != null) goto(`/view?path=${data.next}`);
 			}}
 		>
 			<Icon name="chevron-right"></Icon>
