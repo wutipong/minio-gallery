@@ -1,10 +1,4 @@
-import {
-    MINIO_ACCESSKEY_ID,
-    MINIO_BUCKET,
-    MINIO_ENDPOINT,
-    MINIO_REGION,
-    MINIO_SECRET_KEY
-} from "$env/static/private";
+import { env } from "$env/dynamic/private";
 import { S3Client, ListObjectsV2Command } from "@aws-sdk/client-s3";
 
 interface ListObject {
@@ -19,13 +13,13 @@ interface ListOutput {
 
 export async function listObjects(path: string): Promise<ListOutput> {
     const client = new S3Client({
-        region: MINIO_REGION,
-        endpoint: MINIO_ENDPOINT,
+        region: env.MINIO_REGION,
+        endpoint: env.MINIO_ENDPOINT,
         bucketEndpoint: false,
         forcePathStyle: true,
         credentials: {
-            accessKeyId: MINIO_ACCESSKEY_ID,
-            secretAccessKey: MINIO_SECRET_KEY,
+            accessKeyId: env.MINIO_ACCESSKEY_ID,
+            secretAccessKey: env.MINIO_SECRET_KEY,
         },
     });
 
@@ -40,7 +34,7 @@ export async function listObjects(path: string): Promise<ListOutput> {
     );
 
     const command = new ListObjectsV2Command({
-        Bucket: MINIO_BUCKET,
+        Bucket: env.MINIO_BUCKET,
         Prefix: path ? path : "",
         Delimiter: '/',
     });
