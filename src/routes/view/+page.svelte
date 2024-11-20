@@ -61,7 +61,7 @@
 
 	let breadcrumbData: BreadcrumbData[] = $state([]);
     let path: string = $state("")
-    
+
 	$effect(() => {
         path = data.path?data.path: "";
 		breadcrumbData = createBreadcrumb(path);
@@ -112,5 +112,7 @@
 </Container>
 
 <Container>
-	<Image src="/s3/{path}"></Image>
+    <a href="/s3/{path}" target="_blank">
+        <Image src="/s3/{path}" width="100%"></Image>
+    </a>
 </Container>
