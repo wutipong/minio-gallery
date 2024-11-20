@@ -22,7 +22,7 @@ app.use(
 		proxyReqPathResolver: (req) => req.url.replace(/^\/s3/, `/${bucket}/`),
 		proxyReqOptDecorator: function (proxyReqOpts, srcReq) {
 			proxyReqOpts.headers['X-Minio-Extract'] = 'true';
-			proxyReqOpts.headers['authorization'] = undefined;
+			delete proxyReqOpts.headers['authorization'];
 
 			return proxyReqOpts;
 		}
