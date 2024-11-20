@@ -1,4 +1,4 @@
-import { MINIO_ACCESSKEY_ID, MINIO_ENDPOINT, MINIO_REGION, MINIO_REGION, MINIO_SECRET_KEY } from "$env/static/private";
+import { MINIO_ACCESSKEY_ID, MINIO_BUCKET, MINIO_ENDPOINT, MINIO_REGION, MINIO_REGION, MINIO_SECRET_KEY } from "$env/static/private";
 import type { PageServerLoad } from "./$types";
 import { S3Client, ListObjectsV2Command } from "@aws-sdk/client-s3";
 
@@ -12,6 +12,8 @@ interface PageData {
 }
 
 export const load: PageServerLoad = async ({ request, fetch, url }) => {
+    const path = url.searchParams.get('path');
+
     const client = new S3Client({
         region: MINIO_REGION,
         endpoint: MINIO_ENDPOINT,
@@ -33,12 +35,9 @@ export const load: PageServerLoad = async ({ request, fetch, url }) => {
         }
     );
 
-    const params = {
-        /** input parameters */
-    };
     const command = new ListObjectsV2Command({
-        Bucket: "gallery",
-        Prefix: "cg/[Pixiv FANBOX] Kilesha きれゐしゃ 28724783 (2018.04.27-2023.08.23)/",
+        Bucket: MINIO_BUCKET,
+        Prefix: path? path: "",
         Delimiter: '/',
     });
 
