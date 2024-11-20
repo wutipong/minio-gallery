@@ -1,4 +1,10 @@
-import { MINIO_ACCESSKEY_ID, MINIO_BUCKET, MINIO_ENDPOINT, MINIO_REGION, MINIO_REGION, MINIO_SECRET_KEY } from "$env/static/private";
+import { 
+    MINIO_ACCESSKEY_ID, 
+    MINIO_BUCKET, 
+    MINIO_ENDPOINT, 
+    MINIO_REGION,
+    MINIO_SECRET_KEY 
+} from "$env/static/private";
 import type { PageServerLoad } from "./$types";
 import { S3Client, ListObjectsV2Command } from "@aws-sdk/client-s3";
 
@@ -8,6 +14,7 @@ interface Object {
 }
 
 interface PageData {
+    path: string
     objects: Object[]
 }
 
@@ -84,6 +91,7 @@ export const load: PageServerLoad = async ({ request, fetch, url }) => {
 
         const output: PageData = {
             objects: objects,
+            path: data.Prefix,
         }
 
         return output
