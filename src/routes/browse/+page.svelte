@@ -162,7 +162,9 @@
 								<Icon name="image"></Icon>&nbsp;{getFilename(object.name, object.type)}
 							</CardHeader>
 							<CardBody>
-								<Image thumbnail lazy src="/thumb?path={object.name}"></Image>
+								<a href="/view?path={object.name}">
+									<Image thumbnail lazy src="/thumb?path={object.name}"></Image>
+								</a>
 							</CardBody>
 						{/if}
 					</Card>
