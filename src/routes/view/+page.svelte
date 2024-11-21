@@ -136,7 +136,6 @@
 	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb">
 			{#each breadcrumbData as b, i}
-				{console.log(b, i)}
 				{#if i != breadcrumbData.length - 1}
 					<li class="breadcrumb-item">
 						<a href="/browse?path={b.prefix}#{createElementId(breadcrumbData[i+1].name)}">{b.name}</a>
