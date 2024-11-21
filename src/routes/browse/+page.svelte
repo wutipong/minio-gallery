@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getFilenameFromKey } from '$lib/utils.js';
+	import { createElementId, getFilenameFromKey } from '$lib/utils.js';
 	import {
 		Card,
 		CardBody,
@@ -29,14 +29,14 @@
 	}
 
 	interface BreadcrumbData {
-		name: string;
 		prefix: string;
+		name: string
 	}
 	function createBreadcrumb(path?: string): BreadcrumbData[] {
 		let output = [];
 		output.push({
 			name: '<root>',
-			prefix: ''
+			prefix: '',
 		});
 
 		if (!path) {
@@ -51,7 +51,7 @@
 
 			output.push({
 				name: parts[i],
-				prefix: prefix + '/'
+				prefix: prefix + '/',
 			});
 		}
 
@@ -62,6 +62,7 @@
 
 	$effect(() => {
 		breadcrumbData = createBreadcrumb(data.path);
+		$inspect(breadcrumbData)
 	});
 </script>
 
@@ -83,7 +84,9 @@
 				{console.log(b, i)}
 				{#if i != breadcrumbData.length - 1}
 					<li class="breadcrumb-item">
-						<a href="/browse?path={b.prefix}">{b.name}</a>
+						<a href="/browse?path={b.prefix}#{createElementId(breadcrumbData[i + 1].name)}">
+							{b.name}
+						</a>
 					</li>
 				{/if}
 				{#if i == breadcrumbData.length - 1}
@@ -101,14 +104,14 @@
 		{#if data.prefixes}
 			{#each data.prefixes as object}
 				<Col class="mt-3">
-					<ThumbnailCard name={object.name} type={object.type} ></ThumbnailCard>
+					<ThumbnailCard name={object.name} type={object.type}></ThumbnailCard>
 				</Col>
 			{/each}
 		{/if}
 		{#if data.objects}
 			{#each data.objects as object}
 				<Col class="mt-3">
-					<ThumbnailCard name={object.name} type={object.type} ></ThumbnailCard>
+					<ThumbnailCard name={object.name} type={object.type}></ThumbnailCard>
 				</Col>
 			{/each}
 		{/if}

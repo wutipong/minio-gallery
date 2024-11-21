@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { createElementId } from '$lib/utils.js';
 	import {
 		Button,
 		Collapse,
@@ -138,7 +139,7 @@
 				{console.log(b, i)}
 				{#if i != breadcrumbData.length - 1}
 					<li class="breadcrumb-item">
-						<a href="/browse?path={b.prefix}">{b.name}</a>
+						<a href="/browse?path={b.prefix}#{createElementId(breadcrumbData[i+1].name)}">{b.name}</a>
 					</li>
 				{/if}
 				{#if i == breadcrumbData.length - 1}
