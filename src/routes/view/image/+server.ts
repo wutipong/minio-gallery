@@ -14,17 +14,26 @@ export async function GET({ url, fetch }) {
 				'X-Minio-Extract': 'true'
 			},
 		});
-		const data = await sharp(await resp.arrayBuffer())
-			.resize(VIEW_IMAGE_WIDTH, VIEW_IMAGE_HEIGHT, { fit: "inside" })
-			.jpeg()
-			.toBuffer()
+
+		if(path?.endsWith('.gif')){
+			return new Response(await resp.arrayBuffer(), {
+				headers: {
+					'Content-Type': 'images/gif'
+				}
+			});
+		}
+
+		const image = sharp(await resp.arrayBuffer())
+			.resize(VIEW_IMAGE_WIDTH, VIEW_IMAGE_HEIGHT, { fit: "inside" }).webp();
+
+		const data = await image.toBuffer()
 
 		return new Response(data, {
 			headers: {
-				'Content-Type': 'images/jpeg'
+				'Content-Type': 'images/webp'
 			}
 		});
 	} catch (e) {
-		console.log(e);
+		return new Response(JSON.stringify(e));
 	}
 }

@@ -49,7 +49,7 @@
 				<Image
 					thumbnail
 					loading="lazy"
-					src="/thumb?path={name}"
+					src="/browse/thumb?path={name}"
 					style="min-width:300px; min-height: 300px;"
 				></Image>
 			</a>
