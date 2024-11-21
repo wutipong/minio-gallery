@@ -9,6 +9,7 @@ interface ListObject {
 interface ListOutput {
     path: string
     objects: ListObject[]
+    prefixes: ListObject[]
 }
 
 export async function listObjects(path: string): Promise<ListOutput> {
@@ -40,13 +41,14 @@ export async function listObjects(path: string): Promise<ListOutput> {
     });
 
     let objects: ListObject[] = []
+    let prefixes: ListObject[] = []
 
     const data = await client.send(command);
 
     if (data.CommonPrefixes) {
         for (const prefix of data.CommonPrefixes) {
             if (prefix.Prefix) {
-                objects.push({
+                prefixes.push({
                     type: "directory",
                     name: prefix.Prefix,
                 })
@@ -60,7 +62,7 @@ export async function listObjects(path: string): Promise<ListOutput> {
             const lower = content.Key.toLowerCase();
 
             if (lower.endsWith(".zip")) {
-                objects.push({
+                prefixes.push({
                     type: "zip",
                     name: content.Key + "/",
                 })
@@ -79,6 +81,7 @@ export async function listObjects(path: string): Promise<ListOutput> {
     }
 
     return {
+        prefixes: prefixes,
         objects: objects ? objects : [],
         path: data.Prefix ? data.Prefix : "",
     }

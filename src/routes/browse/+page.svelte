@@ -98,6 +98,13 @@
 
 <Container>
 	<Row cols={{ lg: 3, md: 2, sm: 1, xs: 1 }}>
+		{#if data.prefixes}
+			{#each data.prefixes as object}
+				<Col class="mt-3">
+					<ThumbnailCard name={object.name} type={object.type} ></ThumbnailCard>
+				</Col>
+			{/each}
+		{/if}
 		{#if data.objects}
 			{#each data.objects as object}
 				<Col class="mt-3">
