@@ -1,8 +1,9 @@
+import { publicObjectUrl } from '$lib/minio';
 import sharp from 'sharp'
 
 export async function GET({ url, fetch }) {
 	const path = url.searchParams.get('path');
-	const targetUrl = `/s3/${path}`
+	const targetUrl = publicObjectUrl(path ? path : "")
 
 	try {
 		const resp = await fetch(targetUrl)

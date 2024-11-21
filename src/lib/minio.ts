@@ -83,3 +83,7 @@ export async function listObjects(path: string): Promise<ListOutput> {
         path: data.Prefix ? data.Prefix : "",
     }
 }
+
+export function publicObjectUrl(name: string): URL{
+    return new URL(`${env.MINIO_BUCKET}/${name}`, env.MINIO_ENDPOINT);
+}
