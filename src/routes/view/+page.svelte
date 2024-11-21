@@ -70,19 +70,21 @@
 		<Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
 			<Nav class="ms-auto" navbar>
 				<NavItem>
-					<NavLink
-						disabled={data.previous == null}
-						href={`/view?path=${data.previous}`}
-					>
-						<Icon name="chevron-left"></Icon>Previous
+					<NavLink href="/s3/{path}" target="_blank">
+						<Icon name="download"></Icon>&nbsp;Get
+					</NavLink>
+				</NavItem>
+			</Nav>
+			<Nav navbar>
+				<NavItem>
+					<NavLink disabled={data.previous == null} href={`/view?path=${data.previous}`}>
+						<Icon name="chevron-left"></Icon>&nbsp;Previous
 					</NavLink>
 				</NavItem>
 				<NavItem>
-					<NavLink
-						disabled={data.next == null}
-						href={`/view?path=${data.next}`}
-					>
-						Next<Icon name="chevron-right"></Icon>
+					<NavLink disabled={data.next == null} href={`/view?path=${data.next}`}>
+						<div class="d-md-none"><Icon name="chevron-right"></Icon>&nbsp;Next</div>
+						<div class="d-none d-md-block">Next&nbsp;<Icon name="chevron-right"></Icon></div>
 					</NavLink>
 				</NavItem>
 			</Nav>
@@ -110,17 +112,14 @@
 <Container>
 	<div class="position-relative">
 		{#if !isImageLoaded}
-			<div class="w-100">
+			<div class="position-absolute top-50 start-50 translate-middle">
 				<Spinner type="border"></Spinner> Loading
 			</div>
 		{/if}
-		<a href="/s3/{path}" target="_blank">
-			<Image
-				src="/view/image?path={path}"
-				class="w-100"
-				onload={() => (isImageLoaded = true)}
-			></Image>
-		</a>
+
+		<Image src="/view/image?path={path}" class="w-100" onload={() => (isImageLoaded = true)}
+		></Image>
+
 		<Button
 			color="link"
 			outline
