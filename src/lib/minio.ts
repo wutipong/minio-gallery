@@ -1,8 +1,9 @@
 import { env } from "$env/dynamic/private";
 import { S3Client, ListObjectsV2Command } from "@aws-sdk/client-s3";
+import { determinFileType } from "./utils";
 
 interface ListObject {
-    type: 'image' | 'zip' | 'directory'
+    type: 'image' | 'media' | 'zip' | 'directory'
     name: string
 }
 
@@ -59,23 +60,32 @@ export async function listObjects(path: string): Promise<ListOutput> {
     if (data.Contents) {
         for (const content of data.Contents) {
             if (!content.Key) continue;
-            const lower = content.Key.toLowerCase();
 
-            if (lower.endsWith(".zip")) {
-                prefixes.push({
-                    type: "zip",
-                    name: content.Key + "/",
-                })
-            }
-            else if (lower.endsWith(".jpg") ||
-                lower.endsWith(".jpeg") ||
-                lower.endsWith(".png") ||
-                lower.endsWith(".webp") ||
-                lower.endsWith(".gif")) {
-                objects.push({
-                    type: "image",
-                    name: content.Key,
-                })
+            const filetype = determinFileType(content.Key)
+
+            if (!filetype) continue;
+
+            switch (filetype) {
+                case "zip":
+                    prefixes.push({
+                        type: "zip",
+                        name: content.Key + "/",
+                    })
+                    break;
+
+                case "image":
+                    objects.push({
+                        type: "image",
+                        name: content.Key,
+                    })
+                    break;
+
+                case "media":
+                    objects.push({
+                        type: "media",
+                        name: content.Key,
+                    })
+                    break;
             }
         }
     }
@@ -87,6 +97,6 @@ export async function listObjects(path: string): Promise<ListOutput> {
     }
 }
 
-export function publicObjectUrl(name: string): URL{
+export function publicObjectUrl(name: string): URL {
     return new URL(`${env.MINIO_BUCKET}/${name}`, env.MINIO_ENDPOINT);
 }
