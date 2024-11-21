@@ -14,15 +14,15 @@ export async function GET({ url, fetch }) {
 		
 		const data = await sharp(await resp.arrayBuffer())
 			.resize(300, 300)
-			.jpeg()
+			.webp()
 			.toBuffer()
 
 		return new Response(data, {
 			headers: {
-				'Content-Type': 'images/jpeg'
+				'Content-Type': 'images/webp'
 			}
 		});
 	} catch (e) {
-		return new Response(e.toString())
+		return new Response(JSON.stringify(e));
 	}
 }
