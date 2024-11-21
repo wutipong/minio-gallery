@@ -63,6 +63,48 @@
 	});
 </script>
 
+<Container>
+	<div class="position-absolute top-0 start-0 h-100 w-100" style="padding-top:10em;">
+		{#if !isImageLoaded}
+			<div class="position-absolute top-50 start-50 translate-middle">
+				<Spinner type="border"></Spinner> Loading
+			</div>
+		{/if}
+
+		<div class="position-absolute top-0 start-0 h-100 w-100">
+			<Image
+				src="/view/image?path={path}"
+				class="h-100 w-100"
+				style="object-fit:contain; padding-top:6em;"
+				onload={() => (isImageLoaded = true)}
+			></Image>
+		</div>
+
+		<Button
+			color="link"
+			outline
+			class="position-absolute top-0 start-0 h-100"
+			style="width:20%;"
+			onclick={() => {
+				if (data.previous != null) goto(`/view?path=${data.previous}`);
+			}}
+		>
+			<Icon name="chevron-left"></Icon>
+		</Button>
+		<Button
+			color="link"
+			outline
+			class="position-absolute top-0 end-0 h-100 w-10"
+			style="width:20%;"
+			onclick={() => {
+				if (data.next != null) goto(`/view?path=${data.next}`);
+			}}
+		>
+			<Icon name="chevron-right"></Icon>
+		</Button>
+	</div>
+</Container>
+
 <Container class="sticky-top text-bg-light">
 	<Navbar dark expand="md" container="md">
 		<NavbarBrand href="/">Gallery</NavbarBrand>
@@ -107,40 +149,4 @@
 			{/each}
 		</ol>
 	</nav>
-</Container>
-
-<Container>
-	<div class="position-relative">
-		{#if !isImageLoaded}
-			<div class="position-absolute top-50 start-50 translate-middle">
-				<Spinner type="border"></Spinner> Loading
-			</div>
-		{/if}
-
-		<Image src="/view/image?path={path}" class="w-100" onload={() => (isImageLoaded = true)}
-		></Image>
-
-		<Button
-			color="link"
-			outline
-			class="position-absolute top-0 start-0 h-100"
-			style="width:20%;"
-			onclick={() => {
-				if (data.previous != null) goto(`/view?path=${data.previous}`);
-			}}
-		>
-			<Icon name="chevron-left"></Icon>
-		</Button>
-		<Button
-			color="link"
-			outline
-			class="position-absolute top-0 end-0 h-100 w-10"
-			style="width:20%;"
-			onclick={() => {
-				if (data.next != null) goto(`/view?path=${data.next}`);
-			}}
-		>
-			<Icon name="chevron-right"></Icon>
-		</Button>
-	</div>
 </Container>
