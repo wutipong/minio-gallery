@@ -1,14 +1,10 @@
 <script lang="ts">
-	import { createElementId, getFilenameFromKey } from '$lib/utils.js';
+	import { createElementId } from '$lib/utils.js';
 	import {
-		Card,
-		CardBody,
-		CardHeader,
 		Col,
 		Collapse,
 		Container,
 		Icon,
-		Image,
 		Nav,
 		Navbar,
 		NavbarBrand,
@@ -81,7 +77,6 @@
 	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb">
 			{#each breadcrumbData as b, i}
-				{console.log(b, i)}
 				{#if i != breadcrumbData.length - 1}
 					<li class="breadcrumb-item">
 						<a href="/browse?path={b.prefix}#{createElementId(breadcrumbData[i + 1].name)}">
