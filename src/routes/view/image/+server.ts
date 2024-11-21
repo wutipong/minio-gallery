@@ -9,7 +9,11 @@ export async function GET({ url, fetch }) {
 	const targetUrl = publicObjectUrl(path ? path : "")
 
 	try {
-		const resp = await fetch(targetUrl)
+		const resp = await fetch(targetUrl, {
+			headers: {
+				'X-Minio-Extract': 'true'
+			},
+		});
 		const data = await sharp(await resp.arrayBuffer())
 			.resize(VIEW_IMAGE_WIDTH, VIEW_IMAGE_HEIGHT, { fit: "inside" })
 			.jpeg()
