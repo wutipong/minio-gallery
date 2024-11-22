@@ -11,10 +11,12 @@
 		NavbarToggler,
 		NavItem,
 		NavLink,
-		Row
+		Row,
+		Spinner
 	} from '@sveltestrap/sveltestrap';
 
 	import ThumbnailCard from './ThumbnailCard.svelte';
+	import { navigating } from '$app/stores';
 
 	const { data } = $props();
 
@@ -26,13 +28,13 @@
 
 	interface BreadcrumbData {
 		prefix: string;
-		name: string
+		name: string;
 	}
 	function createBreadcrumb(path?: string): BreadcrumbData[] {
 		let output = [];
 		output.push({
 			name: '<root>',
-			prefix: '',
+			prefix: ''
 		});
 
 		if (!path) {
@@ -47,7 +49,7 @@
 
 			output.push({
 				name: parts[i],
-				prefix: prefix + '/',
+				prefix: prefix + '/'
 			});
 		}
 
@@ -58,7 +60,7 @@
 
 	$effect(() => {
 		breadcrumbData = createBreadcrumb(data.path);
-		$inspect(breadcrumbData)
+		$inspect(breadcrumbData);
 	});
 </script>
 
@@ -77,16 +79,15 @@
 	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb">
 			{#each breadcrumbData as b, i}
-				{#if i != breadcrumbData.length - 1}
+				{#if i == breadcrumbData.length - 1}
+					<li class="breadcrumb-item active" aria-current="page">
+						{b.name}
+					</li>
+				{:else}
 					<li class="breadcrumb-item">
 						<a href="/browse?path={b.prefix}#{createElementId(breadcrumbData[i + 1].name)}">
 							{b.name}
 						</a>
-					</li>
-				{/if}
-				{#if i == breadcrumbData.length - 1}
-					<li class="breadcrumb-item active" aria-current="page">
-						{b.name}
 					</li>
 				{/if}
 			{/each}
@@ -94,21 +95,29 @@
 	</nav>
 </Container>
 
-<Container>
-	<Row cols={{ lg: 3, md: 2, sm: 1, xs: 1 }}>
-		{#if data.prefixes}
-			{#each data.prefixes as object}
-				<Col class="mt-3">
-					<ThumbnailCard name={object.name} type={object.type}></ThumbnailCard>
-				</Col>
-			{/each}
-		{/if}
-		{#if data.objects}
-			{#each data.objects as object}
-				<Col class="mt-3">
-					<ThumbnailCard name={object.name} type={object.type}></ThumbnailCard>
-				</Col>
-			{/each}
-		{/if}
-	</Row>
-</Container>
+{#if $navigating}
+	<Container>
+		<div class="position-absolute top-50 start-50 translate-middle">
+			<Spinner type="border"></Spinner>&NonBreakingSpace;Loading
+		</div>
+	</Container>
+{:else}
+	<Container>
+		<Row cols={{ lg: 3, md: 2, sm: 1, xs: 1 }}>
+			{#if data.prefixes}
+				{#each data.prefixes as object}
+					<Col class="mt-3">
+						<ThumbnailCard name={object.name} type={object.type}></ThumbnailCard>
+					</Col>
+				{/each}
+			{/if}
+			{#if data.objects}
+				{#each data.objects as object}
+					<Col class="mt-3">
+						<ThumbnailCard name={object.name} type={object.type}></ThumbnailCard>
+					</Col>
+				{/each}
+			{/if}
+		</Row>
+	</Container>
+{/if}

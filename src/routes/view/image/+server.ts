@@ -18,7 +18,7 @@ export async function GET({ url, fetch }) {
 		if(path?.endsWith('.gif')){
 			return new Response(await resp.arrayBuffer(), {
 				headers: {
-					'Content-Type': 'images/gif'
+					'Content-Type': 'image/gif'
 				}
 			});
 		}
@@ -30,7 +30,7 @@ export async function GET({ url, fetch }) {
 
 		return new Response(data, {
 			headers: {
-				'Content-Type': 'images/webp'
+				'Content-Type': 'image/webp'
 			}
 		});
 	} catch (e) {
