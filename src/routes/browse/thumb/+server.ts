@@ -19,7 +19,7 @@ export async function GET({ url, fetch }) {
 
 		return new Response(data, {
 			headers: {
-				'Content-Type': 'images/webp'
+				'Content-Type': 'image/webp'
 			}
 		});
 	} catch (e) {
