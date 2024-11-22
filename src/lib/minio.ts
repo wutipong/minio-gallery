@@ -1,6 +1,8 @@
 import { env } from "$env/dynamic/private";
 import { S3Client, ListObjectsV2Command } from "@aws-sdk/client-s3";
 import { determinFileType } from "./utils";
+import naturalCompare from 'natural-compare-lite';
+
 
 interface ListObject {
     type: 'image' | 'media' | 'zip' | 'directory'
@@ -89,6 +91,9 @@ export async function listObjects(path: string): Promise<ListOutput> {
             }
         }
     }
+
+    prefixes.sort((a,b) => naturalCompare(a.name, b.name))
+    objects.sort((a,b) => naturalCompare(a.name, b.name))
 
     return {
         prefixes: prefixes,
