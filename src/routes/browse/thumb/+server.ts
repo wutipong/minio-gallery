@@ -1,6 +1,9 @@
 import { publicObjectUrl } from '$lib/minio';
 import sharp from 'sharp'
 
+const THUMBNAIL_WIDTH = 400;
+const THUMBNAIL_HEIGHT = 300;
+
 export async function GET({ url, fetch }) {
 	const path = url.searchParams.get('path');
 	const targetUrl = publicObjectUrl(path ? path : "")
@@ -11,9 +14,9 @@ export async function GET({ url, fetch }) {
 				'X-Minio-Extract': 'true'
 			},
 		});
-		
+
 		const data = await sharp(await resp.arrayBuffer())
-			.resize(300, 300)
+			.resize(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT)
 			.webp()
 			.toBuffer()
 
