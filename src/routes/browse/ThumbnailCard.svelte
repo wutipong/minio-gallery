@@ -97,7 +97,7 @@
 		</svg>`;
 </script>
 
-<Card id={createElementId(getFilenameFromKey(name, type))}>
+<Card data-id={createElementId(getFilenameFromKey(name, type))}>
 	<a href={getLink(name, type)}>
 		<Image
 			class="card-img-top"
