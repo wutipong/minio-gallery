@@ -16,7 +16,10 @@
 	} from '@sveltestrap/sveltestrap';
 
 	import ThumbnailCard from './ThumbnailCard.svelte';
-	import { navigating } from '$app/stores';
+	import { navigating, page } from '$app/stores';
+	import { usePlyrLayoutClasses } from 'vidstack';
+	import { afterNavigate } from '$app/navigation';
+	import { onMount } from 'svelte';
 
 	const { data } = $props();
 
@@ -60,8 +63,20 @@
 
 	$effect(() => {
 		breadcrumbData = createBreadcrumb(data.path);
-		$inspect(breadcrumbData);
 	});
+
+	function moveToHash(node: Element){
+		const hash = $page.url.hash;
+		if (!hash) return;
+
+		const element = node.querySelector(`div[data-id="${hash.substring(1)}"]`)
+
+		element?.scrollIntoView({
+			behavior: 'smooth',
+			block: 'end',
+			inline: 'nearest',
+		})
+	}
 </script>
 
 <Container class="sticky-top text-bg-light">
@@ -102,9 +117,11 @@
 		</div>
 	</Container>
 {:else}
-	<Container>
+	<Container >
+		<div use:moveToHash>
 		<Row cols={{ lg: 3, md: 2, sm: 1, xs: 1 }}>
 			{#if data.prefixes}
+			
 				{#each data.prefixes as object}
 					<Col class="mt-3">
 						<ThumbnailCard name={object.name} type={object.type}></ThumbnailCard>
@@ -119,5 +136,6 @@
 				{/each}
 			{/if}
 		</Row>
+	</div>
 	</Container>
 {/if}
