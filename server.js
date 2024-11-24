@@ -18,20 +18,22 @@ app.get('/healthcheck', (req, res) => {
 	res.end('ok');
 });
 
-var apiProxy = httpProxy.createProxyServer();
+var s3proxy = httpProxy.createProxyServer({
+	changeOrigin: true,
+	target: endpoint,
+	protocolRewrite: "http",
+});
 
-app.use("/s3", function (req, res) {
-	apiProxy.web(req, res, {
-		target: env.MINIO_ENDPOINT,
-		rewrite: (path) => path.replace(/^\/s3/, `/${env.MINIO_BUCKET}/`),
-		changeOrigin: true,
-		configure: (proxy, _options) => {
-			proxy.on('proxyReq', function (proxyReq, req, res, options) {
-				proxyReq.setHeader('X-Minio-Extract', 'true');
-				proxyReq.removeHeader("authorization");
-			});
-		},
-	});
+s3proxy.on("proxyReq", function (proxyReq, req, res, optrions) {
+	proxyReq.setHeader('X-Minio-Extract', 'true');
+	proxyReq.removeHeader("authorization");
+
+	proxyReq.path = `/${bucket}${proxyReq.path}`
+})
+
+
+app.use(/^\/s3/, function (req, res) {
+	s3proxy.web(req, res, {});
 });
 
 // let SvelteKit handle everything else, including serving prerendered pages and static assets
