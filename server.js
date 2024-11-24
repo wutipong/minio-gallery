@@ -1,7 +1,6 @@
 import { handler } from './build/handler.js';
 import express from 'express';
 import 'dotenv/config';
-import proxy from 'express-http-proxy';
 import httpProxy from 'http-proxy';
 
 const app = express();
@@ -19,24 +18,10 @@ app.get('/healthcheck', (req, res) => {
 	res.end('ok');
 });
 
-/*
-app.use(
-	'/s3',
-	proxy(endpoint, {
-		proxyReqPathResolver: (req) => req.url.replace(/^\/s3/, `/${bucket}/`),
-		proxyReqOptDecorator: function (proxyReqOpts, srcReq) {
-			proxyReqOpts.headers['X-Minio-Extract'] = 'true';
-			delete proxyReqOpts.headers['authorization'];
-
-			return proxyReqOpts;
-		}
-	})
-);
-*/
-
 var apiProxy = httpProxy.createProxyServer();
 
 app.use("/s3", function (req, res) {
+	apiProxy.ws
 	apiProxy.web(req, res, {
 		target: env.MINIO_ENDPOINT,
 		rewrite: (path) => path.replace(/^\/s3/, `/${env.MINIO_BUCKET}/`),
