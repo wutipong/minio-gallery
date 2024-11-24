@@ -1,5 +1,4 @@
-FROM node:20-alpine 
-#AS builder
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
@@ -9,11 +8,11 @@ RUN npm ci
 RUN npm run build
 RUN npm prune --production
 
-# FROM node:20-alpine
+FROM node:20-alpine
 
-# WORKDIR /app
+WORKDIR /app
 
-# COPY --from=builder /app .
+COPY --from=builder /app .
 
-EXPOSE 4173
-CMD ["npm", "run", "preview-host"]
+EXPOSE 3000
+CMD ["npm", "run", "server.js"]
