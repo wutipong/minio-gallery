@@ -21,7 +21,6 @@ app.get('/healthcheck', (req, res) => {
 var apiProxy = httpProxy.createProxyServer();
 
 app.use("/s3", function (req, res) {
-	apiProxy.ws
 	apiProxy.web(req, res, {
 		target: env.MINIO_ENDPOINT,
 		rewrite: (path) => path.replace(/^\/s3/, `/${env.MINIO_BUCKET}/`),
