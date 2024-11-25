@@ -68,6 +68,10 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Minio Gallery - View: {data.current}</title>
+</svelte:head>
+
 {#if filetype == 'image'}
 	<Container>
 		<div class="position-absolute top-0 start-0 h-100 w-100" style="padding-top:10em;">
@@ -114,7 +118,7 @@
 
 <Container class="sticky-top text-bg-light">
 	<Navbar dark expand="md" container="md">
-		<NavbarBrand href="/">Gallery</NavbarBrand>
+		<NavbarBrand href="/">Minio Gallery</NavbarBrand>
 		<NavbarToggler on:click={() => (isOpen = !isOpen)} />
 		<Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
 			<Nav class="ms-auto" navbar>
