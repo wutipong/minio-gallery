@@ -19,7 +19,7 @@ app.get('/healthcheck', (req, res) => {
 app.use(
 	'/s3',
 	proxy(endpoint, {
-		proxyReqPathResolver: (req) => req.url.replace(/^\/s3/, `/${bucket}/`),
+		proxyReqPathResolver: (req) => `/${bucket}${req.url}` ,
 		proxyReqOptDecorator: function (proxyReqOpts, srcReq) {
 			proxyReqOpts.headers['X-Minio-Extract'] = 'true';
 			delete proxyReqOpts.headers['authorization'];
