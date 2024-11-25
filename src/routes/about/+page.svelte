@@ -18,9 +18,13 @@
     const { data } = $props();
 </script>
 
+<svelte:head>
+	<title>Minio Gallery: About</title>
+</svelte:head>
+
 <Container class="sticky-top text-bg-light">
 	<Navbar dark expand="md" container="md">
-		<NavbarBrand href="/">Gallery</NavbarBrand>
+		<NavbarBrand href="/">Minio Gallery</NavbarBrand>
 		<NavbarToggler on:click={() => (isOpen = !isOpen)} />
 		<Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
 			<Nav class="ms-auto" navbar>
